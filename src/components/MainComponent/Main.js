@@ -8,18 +8,27 @@ const Main = () => {
   const [makeMatrix, setMakeMatrix] = useState(false);
   const [matrixDetails, setMatrixDetails] = useState([]);
   const [storeHouseCoordinates, setstoreHouseCoordinates] = useState([]);
+  const [disabled, setDisabled] = useState(false);
   const [res, setRes] = useState([]);
 
   const handleMakeMatrix = (e) => {
     e.preventDefault();
-    console.log(row, col);
+    // console.log(row, col);
+    if (col > 10) {
+      alert("Keep column below or equal to 10");
+      return;
+    }
 
     setMakeMatrix(!makeMatrix);
     setMatrixDetails([]);
     setRes([]);
+    if (disabled === true) {
+      setDisabled(false);
+    }
   };
 
-  console.log(row, col);
+  //   console.log(row, col);
+  console.log(matrixDetails);
   //   let matrix = new Array(Number(col))
   //     .fill(0)
   //     .map(() => new Array(Number(row)).fill(<Box />));
@@ -53,7 +62,7 @@ const Main = () => {
       let dist = 0;
 
       for (let j = 0; j < matrixDetails.length; j++) {
-        if (matrixDetails[j][2] !== "House") {
+        if (matrixDetails[j][2] !== "House" || matrixDetails[j][2] !== "") {
           console.log(matrixDetails[j][2]);
           dist += Math.sqrt(
             (matrixDetails[j][0] - storeHouseCoordinates[i][0]) ** 2 +
@@ -72,11 +81,16 @@ const Main = () => {
         ]);
       }
     }
+
+    setDisabled(true);
   };
 
   return (
     <div className="mx-2">
-      <Input row={row} col={col} setCol={setCol} setRow={setRow} />
+      {makeMatrix ? null : (
+        <Input row={row} col={col} setCol={setCol} setRow={setRow} />
+      )}
+
       <div className="text-center">
         <button
           onClick={handleMakeMatrix}
@@ -130,12 +144,61 @@ const Main = () => {
       <div className="text-center md:p-6 p-3">
         <button
           onClick={handleCalculateBest}
-          className="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+          disabled={disabled}
+          className={
+            disabled
+              ? "px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-80"
+              : "px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+          }
         >
           Calculate Best House
         </button>
       </div>
-      <div>{`${res[0]} ${res[1]} ${res[2]}`}</div>
+      {res[0] === undefined ? (
+        <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md">
+          <div className="flex items-center justify-center w-12 bg-blue-500">
+            <svg
+              className="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z" />
+            </svg>
+          </div>
+
+          <div className="px-4 py-2 -mx-3">
+            <div className="mx-3">
+              <span className="font-semibold text-blue-500 ">Info</span>
+              <p className="text-sm text-gray-600 ">
+                Answer will be displayed here!!
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md ">
+          <div className="flex items-center justify-center w-12 bg-emerald-500">
+            <svg
+              className="w-6 h-6 text-white fill-current"
+              viewBox="0 0 40 40"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z" />
+            </svg>
+          </div>
+
+          <div className="px-4 py-2 -mx-3">
+            <div className="mx-3">
+              <span className="font-semibold text-emerald-500 ">Success</span>
+              <p className="text-sm text-gray-600 ">
+                {`The best House is at Coordinates`}{" "}
+                <span className="font-bold text-lg text-pink-500">{`${res[0]} ${res[1]}`}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* <div>{`${res[0]} ${res[1]} ${res[2]}`}</div> */}
     </div>
   );
 };

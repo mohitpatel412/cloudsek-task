@@ -4,7 +4,7 @@ const Box = (props) => {
   const [showModal, setShowModal] = React.useState(false);
   const [assets, setAssets] = React.useState("");
   const [disabled, setDisabled] = React.useState(false);
-  console.log(assets);
+  //   console.log(assets);
   const handlesetMatrix = (e) => {
     props.matrixDetails.push([
       props.dimensions[0],

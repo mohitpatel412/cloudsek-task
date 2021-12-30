@@ -4,7 +4,7 @@ const Input = (props) => {
   return (
     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 md:py-8 py-4">
       <div>
-        <label className="text-gray-700" for="row">
+        <label className="text-gray-700" htmlFor="row">
           Enter Rows :
         </label>
         <input
@@ -18,8 +18,8 @@ const Input = (props) => {
       </div>
 
       <div>
-        <label className="text-gray-700" for="column">
-          Enter Column :
+        <label className="text-gray-700" htmlFor="column">
+          Enter Column : (Max 10 - For Convenience)
         </label>
         <input
           id="column"
