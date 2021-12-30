@@ -7,6 +7,8 @@ const Main = () => {
   const [col, setCol] = useState(2);
   const [makeMatrix, setMakeMatrix] = useState(false);
   const [matrixDetails, setMatrixDetails] = useState([]);
+  const [storeHouseCoordinates, setstoreHouseCoordinates] = useState([]);
+  const [res, setRes] = useState([]);
 
   const handleMakeMatrix = (e) => {
     e.preventDefault();
@@ -14,6 +16,7 @@ const Main = () => {
 
     setMakeMatrix(!makeMatrix);
     setMatrixDetails([]);
+    setRes([]);
   };
 
   console.log(row, col);
@@ -22,6 +25,7 @@ const Main = () => {
   //     .map(() => new Array(Number(row)).fill(<Box />));
 
   let matrix = [];
+  // let storeHouseCoordinates = [];
 
   for (let i = 0; i < row; i++) {
     for (let j = 0; j < col; j++) {
@@ -34,6 +38,41 @@ const Main = () => {
       );
     }
   }
+
+  const handleCalculateBest = () => {
+    // console.log(matrixDetails);
+    for (let i = 0; i < matrixDetails.length; i++) {
+      //   console.log(matrixDetails[i][2]);
+      if (matrixDetails[i][2] === "House") {
+        storeHouseCoordinates.push(matrixDetails[i]);
+      }
+    }
+    console.log(storeHouseCoordinates);
+    var mn = Number.MAX_VALUE;
+    for (let i = 0; i < storeHouseCoordinates.length; i++) {
+      let dist = 0;
+
+      for (let j = 0; j < matrixDetails.length; j++) {
+        if (matrixDetails[j][2] !== "House") {
+          console.log(matrixDetails[j][2]);
+          dist += Math.sqrt(
+            (matrixDetails[j][0] - storeHouseCoordinates[i][0]) ** 2 +
+              (matrixDetails[j][1] - storeHouseCoordinates[i][1]) ** 2
+          );
+        }
+      }
+      //   console.log(dist);
+      console.log(mn);
+      if (dist < mn) {
+        mn = dist;
+        setRes([
+          storeHouseCoordinates[i][0],
+          storeHouseCoordinates[i][1],
+          dist,
+        ]);
+      }
+    }
+  };
 
   return (
     <div className="mx-2">
@@ -87,6 +126,16 @@ const Main = () => {
           </div>
         </div>
       ) : null}
+
+      <div className="text-center md:p-6 p-3">
+        <button
+          onClick={handleCalculateBest}
+          className="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+        >
+          Calculate Best House
+        </button>
+      </div>
+      <div>{`${res[0]} ${res[1]} ${res[2]}`}</div>
     </div>
   );
 };
