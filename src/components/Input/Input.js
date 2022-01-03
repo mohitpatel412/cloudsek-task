@@ -2,7 +2,7 @@ import React from "react";
 
 const Input = (props) => {
   return (
-    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 md:py-8 py-4">
+    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 md:py-8 py-4 lg:mx-60 md:mx-36 mx-4">
       <div>
         <label className="text-gray-700" htmlFor="row">
           Enter Rows :

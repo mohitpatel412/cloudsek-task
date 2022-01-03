@@ -1,37 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Box = (props) => {
-  const [showModal, setShowModal] = React.useState(false);
-  const [assets, setAssets] = React.useState("");
-  const [disabled, setDisabled] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [assets, setAssets] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [disabled, setDisabled] = useState(false);
+
   //   console.log(assets);
   const handlesetMatrix = (e) => {
+    for (let i = 0; i < props.matrixDetails.length; i++) {
+      if (
+        props.matrixDetails[i][0] === props.dimensions[0] &&
+        props.matrixDetails[i][1] === props.dimensions[1]
+      ) {
+        props.matrixDetails.splice(i, 1);
+      }
+    }
+
     props.matrixDetails.push([
       props.dimensions[0],
       props.dimensions[1],
       assets,
     ]);
+
     setDisabled(true);
   };
 
-  //   console.log(props.matrixDetails);
+  // console.log(props.matrixDetails);
 
   return (
     <div className="py-2">
-      <div className="p-2 mt-2 border-2 border-gray-700 rounded-md">
+      <div className="p-2 mt-2  rounded-md">
         <>
           <button
             className={
-              disabled
-                ? `bg-gray-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`
-                : `bg-green-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`
+              props.res[0] === props.dimensions[0] &&
+              props.res[1] === props.dimensions[1]
+                ? `bg-red-500 border-2 border-gray-700 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`
+                : `bg-green-500 border-2 border-gray-700 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`
             }
             type="button"
             onClick={() => setShowModal(true)}
-            disabled={disabled}
+            // disabled={disabled}
           >
             {assets !== "" ? (
-              <div>{assets}</div>
+              <div className="text-sm font-medium">{assets}</div>
             ) : (
               <div>Select ({props.dimensions})</div>
             )}
@@ -65,7 +78,7 @@ const Box = (props) => {
                       </div>
 
                       <div>
-                        <label className="text-gray-700" for="row">
+                        <label className="text-gray-700" htmlFor="row">
                           Others :
                         </label>
                         <input

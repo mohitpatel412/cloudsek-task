@@ -7,9 +7,11 @@ const Main = () => {
   const [col, setCol] = useState(2);
   const [makeMatrix, setMakeMatrix] = useState(false);
   const [matrixDetails, setMatrixDetails] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [storeHouseCoordinates, setstoreHouseCoordinates] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [res, setRes] = useState([]);
+  const [count, setCount] = useState(1);
 
   const handleMakeMatrix = (e) => {
     e.preventDefault();
@@ -25,10 +27,11 @@ const Main = () => {
     if (disabled === true) {
       setDisabled(false);
     }
+    setCount(1);
   };
 
   //   console.log(row, col);
-  console.log(matrixDetails);
+  //console.log(matrixDetails);
   //   let matrix = new Array(Number(col))
   //     .fill(0)
   //     .map(() => new Array(Number(row)).fill(<Box />));
@@ -43,6 +46,7 @@ const Main = () => {
           matrixDetails={matrixDetails}
           setMatrixDetails={setMatrixDetails}
           dimensions={[i, j]}
+          res={[res[0], res[1]]}
         />
       );
     }
@@ -56,14 +60,14 @@ const Main = () => {
         storeHouseCoordinates.push(matrixDetails[i]);
       }
     }
-    console.log(storeHouseCoordinates);
+    // console.log(storeHouseCoordinates);
     var mn = Number.MAX_VALUE;
     for (let i = 0; i < storeHouseCoordinates.length; i++) {
       let dist = 0;
 
       for (let j = 0; j < matrixDetails.length; j++) {
         if (matrixDetails[j][2] !== "House" || matrixDetails[j][2] !== "") {
-          console.log(matrixDetails[j][2]);
+          //   console.log(matrixDetails[j][2]);
           dist += Math.sqrt(
             (matrixDetails[j][0] - storeHouseCoordinates[i][0]) ** 2 +
               (matrixDetails[j][1] - storeHouseCoordinates[i][1]) ** 2
@@ -71,9 +75,10 @@ const Main = () => {
         }
       }
       //   console.log(dist);
-      console.log(mn);
-      if (dist < mn) {
+      //   console.log(mn);
+      if (dist <= mn) {
         mn = dist;
+        setCount(count + 1);
         setRes([
           storeHouseCoordinates[i][0],
           storeHouseCoordinates[i][1],
@@ -94,7 +99,7 @@ const Main = () => {
       <div className="text-center">
         <button
           onClick={handleMakeMatrix}
-          className="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+          className="px-4 py-2 my-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
         >
           {makeMatrix === false ? "Make Matrix" : "Remove Matrix"}
         </button>
@@ -130,8 +135,8 @@ const Main = () => {
           <div
             className={`grid gap-4`}
             style={{
-              gridTemplateRows: `repeat(${row}, 115px)`,
-              gridTemplateColumns: `repeat(${col}, 115px)`,
+              gridTemplateRows: `repeat(${row}, 120px)`,
+              gridTemplateColumns: `repeat(${col}, 120px)`,
             }}
           >
             {matrix.map((item, idx) => {
@@ -141,19 +146,22 @@ const Main = () => {
         </div>
       ) : null}
 
-      <div className="text-center md:p-6 p-3">
-        <button
-          onClick={handleCalculateBest}
-          disabled={disabled}
-          className={
-            disabled
-              ? "px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-80"
-              : "px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
-          }
-        >
-          Calculate Best House
-        </button>
-      </div>
+      {makeMatrix ? (
+        <div className="text-center md:p-6 p-3">
+          <button
+            onClick={handleCalculateBest}
+            // disabled={disabled}
+            className={
+              disabled
+                ? "px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-80"
+                : "px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+            }
+          >
+            Calculate Best House
+          </button>
+        </div>
+      ) : null}
+
       {res[0] === undefined ? (
         <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md">
           <div className="flex items-center justify-center w-12 bg-blue-500">
@@ -189,7 +197,10 @@ const Main = () => {
 
           <div className="px-4 py-2 -mx-3">
             <div className="mx-3">
-              <span className="font-semibold text-emerald-500 ">Success</span>
+              <span className="font-semibold text-emerald-500 ">
+                Best House is with{" "}
+                <span className="text-red-500 font-bold">RED</span> box
+              </span>
               <p className="text-sm text-gray-600 ">
                 {`The best House is at Coordinates`}{" "}
                 <span className="font-bold text-lg text-pink-500">{`${res[0]} ${res[1]}`}</span>
