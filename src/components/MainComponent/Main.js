@@ -30,12 +30,6 @@ const Main = () => {
     setCount(1);
   };
 
-  //   console.log(row, col);
-  //console.log(matrixDetails);
-  //   let matrix = new Array(Number(col))
-  //     .fill(0)
-  //     .map(() => new Array(Number(row)).fill(<Box />));
-
   let matrix = [];
   // let storeHouseCoordinates = [];
 
@@ -76,7 +70,7 @@ const Main = () => {
       }
       //   console.log(dist);
       //   console.log(mn);
-      if (dist <= mn) {
+      if (dist < mn) {
         mn = dist;
         setCount(count + 1);
         setRes([
